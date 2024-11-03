@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Study\\Nikolasha\\Algorithms-Lab3\\Lab3\\Lab3\\Lab3.csproj",
-      "projectName": "Lab3",
-      "projectPath": "D:\\Study\\Nikolasha\\Algorithms-Lab3\\Lab3\\Lab3\\Lab3.csproj",
+      "projectUniqueName": "D:\\Study\\Nikolasha\\Algorithms-Lab3\\Lab3\\WPF\\WPF.csproj",
+      "projectName": "WPF",
+      "projectPath": "D:\\Study\\Nikolasha\\Algorithms-Lab3\\Lab3\\WPF\\WPF.csproj",
       "packagesPath": "C:\\Users\\denis\\.nuget\\packages\\",
-      "outputPath": "D:\\Study\\Nikolasha\\Algorithms-Lab3\\Lab3\\Lab3\\obj\\",
+      "outputPath": "D:\\Study\\Nikolasha\\Algorithms-Lab3\\Lab3\\WPF\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\denis\\AppData\\Roaming\\NuGet\\NuGet.Config",
