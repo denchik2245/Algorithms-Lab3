@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace Logic
 {
@@ -68,6 +64,20 @@ namespace Logic
                 current = current.Next;
             }
             Console.WriteLine("null");
+        }
+
+        // Получение всех элементов списка в виде строки
+        public string GetAllElementsAsString()
+        {
+            Node<T> current = head;
+            StringWriter writer = new StringWriter();
+            while (current != null)
+            {
+                writer.Write(current.Data + " -> ");
+                current = current.Next;
+            }
+            writer.Write("null");
+            return writer.ToString();
         }
     }
 }

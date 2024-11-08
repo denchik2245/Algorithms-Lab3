@@ -1,3 +1,14 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using System;
+using System.IO;
+using Logic;
 
-Console.WriteLine("Hello, World!");
+namespace StackApp
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            
+        }
+    }
+}

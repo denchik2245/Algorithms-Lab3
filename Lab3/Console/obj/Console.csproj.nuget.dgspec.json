@@ -1,50 +1,48 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\razinmax02\\Source\\Repos\\Algorithms-Lab3\\Lab3\\Console\\Console.csproj": {}
+    "D:\\Study\\Nikolasha\\Algorithms-Lab3\\Lab3\\Console\\Console.csproj": {}
   },
   "projects": {
-    "C:\\Users\\razinmax02\\Source\\Repos\\Algorithms-Lab3\\Lab3\\Console\\Console.csproj": {
+    "D:\\Study\\Nikolasha\\Algorithms-Lab3\\Lab3\\Console\\Console.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\razinmax02\\Source\\Repos\\Algorithms-Lab3\\Lab3\\Console\\Console.csproj",
+        "projectUniqueName": "D:\\Study\\Nikolasha\\Algorithms-Lab3\\Lab3\\Console\\Console.csproj",
         "projectName": "Console",
-        "projectPath": "C:\\Users\\razinmax02\\Source\\Repos\\Algorithms-Lab3\\Lab3\\Console\\Console.csproj",
-        "packagesPath": "C:\\Users\\razinmax02\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\razinmax02\\Source\\Repos\\Algorithms-Lab3\\Lab3\\Console\\obj\\",
+        "projectPath": "D:\\Study\\Nikolasha\\Algorithms-Lab3\\Lab3\\Console\\Console.csproj",
+        "packagesPath": "C:\\Users\\denis\\.nuget\\packages\\",
+        "outputPath": "D:\\Study\\Nikolasha\\Algorithms-Lab3\\Lab3\\Console\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\razinmax02\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\denis\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net8.0"
+          "net8.0-windows"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net8.0": {
-            "targetAlias": "net8.0",
-            "projectReferences": {}
+          "net8.0-windows7.0": {
+            "targetAlias": "net8.0-windows",
+            "projectReferences": {
+              "D:\\Study\\Nikolasha\\Algorithms-Lab3\\Lab3\\WPF\\WPF.csproj": {
+                "projectPath": "D:\\Study\\Nikolasha\\Algorithms-Lab3\\Lab3\\WPF\\WPF.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
+        "net8.0-windows7.0": {
+          "targetAlias": "net8.0-windows",
           "imports": [
             "net461",
             "net462",
@@ -61,7 +59,65 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\Study\\Nikolasha\\Algorithms-Lab3\\Lab3\\WPF\\WPF.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Study\\Nikolasha\\Algorithms-Lab3\\Lab3\\WPF\\WPF.csproj",
+        "projectName": "WPF",
+        "projectPath": "D:\\Study\\Nikolasha\\Algorithms-Lab3\\Lab3\\WPF\\WPF.csproj",
+        "packagesPath": "C:\\Users\\denis\\.nuget\\packages\\",
+        "outputPath": "D:\\Study\\Nikolasha\\Algorithms-Lab3\\Lab3\\WPF\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\denis\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0-windows"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0-windows7.0": {
+            "targetAlias": "net8.0-windows",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0-windows7.0": {
+          "targetAlias": "net8.0-windows",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            },
+            "Microsoft.WindowsDesktop.App.WPF": {
+              "privateAssets": "none"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
