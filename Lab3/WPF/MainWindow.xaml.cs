@@ -20,15 +20,5 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-
-        LinkedStack<int> linkedStack = new LinkedStack<int>();
-
-        // Добавление элементов в стек
-        linkedStack.Push(10);
-        linkedStack.Push(20);
-        linkedStack.Push(30);
-
-        // Вывод содержимого стека в TextBlock
-        StackOutput.Text = linkedStack.PrintWPF();
     }
 }
