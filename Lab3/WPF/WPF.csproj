@@ -9,4 +9,19 @@
         <RootNamespace>Lab3</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <None Remove="Resources\input.txt" />
+      <Content Include="Resources\input.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Resources\postfix.txt" />
+      <Content Include="Resources\postfix.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Resources\infix.txt" />
+      <Content Include="Resources\infix.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>
