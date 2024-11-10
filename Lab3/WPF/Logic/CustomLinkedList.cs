@@ -31,6 +31,25 @@ namespace Logic
             head = newNode;
         }
 
+        // Добавление элемента в конец списка
+        public void AddLast(T data)
+        {
+            Node<T> newNode = new Node<T>(data);
+            if (head == null)
+            {
+                head = newNode;
+            }
+            else
+            {
+                Node<T> current = head;
+                while (current.Next != null)
+                {
+                    current = current.Next;
+                }
+                current.Next = newNode;
+            }
+        }
+
         // Удаление и возврат первого элемента
         public T RemoveFirst()
         {
@@ -55,15 +74,14 @@ namespace Logic
         }
 
         // Вывод всех элементов списка
-        public void Display()
+        public void Display(Action<string> output)
         {
             Node<T> current = head;
             while (current != null)
             {
-                Console.Write(current.Data + " -> ");
+                output(current.Data.ToString());
                 current = current.Next;
             }
-            Console.WriteLine("null");
         }
 
         // Получение всех элементов списка в виде строки
