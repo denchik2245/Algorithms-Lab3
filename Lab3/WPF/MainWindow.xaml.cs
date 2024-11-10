@@ -169,7 +169,7 @@ namespace WpfApp
             }
         }
 
-        //Перевод записи в ОПЗ
+        //Перевод записи в  ОПЗ
         private void ConvertInfixToPostfix(string infixExpression)
         {
             try
