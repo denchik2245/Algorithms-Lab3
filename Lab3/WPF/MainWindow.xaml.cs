@@ -23,12 +23,12 @@ namespace WpfApp
             string selectedTask = TaskSelector.SelectedItem?.ToString();
             if (selectedTask == "Перевод записи в ОПЗ")
             {
-                FilePathTextBox.Text = string.Empty; // Очищаем текстовое поле
-                FilePathTextBlock.Text = "Ввести свою запись"; // Меняем текст метки
+                FilePathTextBox.Text = string.Empty;
+                FilePathTextBlock.Text = "Ввести свою запись";
             }
             else
             {
-                FilePathTextBlock.Text = "Другой путь к файлу"; // Возвращаем текст метки
+                FilePathTextBlock.Text = "Другой путь к файлу";
             }
         }
 
@@ -74,8 +74,8 @@ namespace WpfApp
             {
                 // Если поле ввода не пустое, используем его содержимое, иначе читаем из файла
                 string infixExpression = string.IsNullOrWhiteSpace(FilePathTextBox.Text)
-                    ? File.ReadAllText(filePath) // Считываем инфиксное выражение из файла
-                    : FilePathTextBox.Text; // Используем введенное выражение
+                    ? File.ReadAllText(filePath)
+                    : FilePathTextBox.Text;
 
                 if (string.IsNullOrWhiteSpace(infixExpression))
                 {
