@@ -30,19 +30,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\razinmax02\\.nuget\\packages\\": {}
+    "C:\\Users\\denis\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\razinmax02\\Source\\Repos\\Algorithms-Lab3\\Lab3\\Console\\Console.csproj",
+      "projectUniqueName": "D:\\Study\\Nikolasha\\Algorithms-Lab3\\Lab3\\Console\\Console.csproj",
       "projectName": "Console",
-      "projectPath": "C:\\Users\\razinmax02\\Source\\Repos\\Algorithms-Lab3\\Lab3\\Console\\Console.csproj",
-      "packagesPath": "C:\\Users\\razinmax02\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\razinmax02\\Source\\Repos\\Algorithms-Lab3\\Lab3\\Console\\obj\\",
+      "projectPath": "D:\\Study\\Nikolasha\\Algorithms-Lab3\\Lab3\\Console\\Console.csproj",
+      "packagesPath": "C:\\Users\\denis\\.nuget\\packages\\",
+      "outputPath": "D:\\Study\\Nikolasha\\Algorithms-Lab3\\Lab3\\Console\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\razinmax02\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\denis\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -50,15 +50,14 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0-windows7.0": {
           "targetAlias": "net8.0-windows",
           "projectReferences": {
-            "C:\\Users\\razinmax02\\Source\\Repos\\Algorithms-Lab3\\Lab3\\WPF\\WPF.csproj": {
-              "projectPath": "C:\\Users\\razinmax02\\Source\\Repos\\Algorithms-Lab3\\Lab3\\WPF\\WPF.csproj"
+            "D:\\Study\\Nikolasha\\Algorithms-Lab3\\Lab3\\WPF\\WPF.csproj": {
+              "projectPath": "D:\\Study\\Nikolasha\\Algorithms-Lab3\\Lab3\\WPF\\WPF.csproj"
             }
           }
         }
@@ -67,11 +66,6 @@
         "warnAsError": [
           "NU1605"
         ]
-      },
-      "restoreAuditProperties": {
-        "enableAudit": "true",
-        "auditLevel": "low",
-        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -93,7 +87,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

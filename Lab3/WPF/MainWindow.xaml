@@ -9,7 +9,8 @@
             <Setter Property="Foreground" Value="White" />
             <Setter Property="BorderBrush" Value="Transparent" />
             <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="Padding" Value="50,28,50,28" />
+            <Setter Property="Padding" Value="10,5,10,5" />
+            <Setter Property="Width" Value="200" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -30,13 +31,21 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style x:Key="CustomRadioButtonStyle" TargetType="RadioButton">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="Margin" Value="0,5,0,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
     </Window.Resources>
-    
+
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="137" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="1">
@@ -56,54 +65,76 @@
         <Border Grid.Row="2" Background="#F5F5F5">
             <Grid Margin="30">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Orientation="Horizontal" Grid.Column="0" HorizontalAlignment="Left" Margin="0,0,30,0">
-                    <StackPanel Width="260" Orientation="Vertical" VerticalAlignment="Center" Margin="0,0,30,0">
-                        <TextBlock Text="Задание" Foreground="Black" FontSize="20" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0,0,0,5"/>
-                        <Border Height="40" Background="White" CornerRadius="10" Padding="0" Margin="0,5,0,0">
-                            <ComboBox x:Name="TaskSelector" 
-                                      FontSize="14" 
-                                      FontWeight="Light" 
-                                      Foreground="Black" 
-                                      Background="Transparent" 
-                                      BorderThickness="0" 
-                                      Margin="10,0,10,0"
-                                      VerticalContentAlignment="Center"
-                                      HorizontalContentAlignment="Center">
-                            </ComboBox>
-                        </Border>
-                    </StackPanel>
-                    <Border x:Name="GraphDivider" Width="1" Background="#D7D7D7" Margin="30,0,30,0" Visibility="Visible"/>
+                <!-- Радиокнопки -->
+                <StackPanel Orientation="Vertical" Grid.Column="0" Margin="0,0,20,0">
+                    <RadioButton Style="{StaticResource CustomRadioButtonStyle}" 
+                                 Name="StackRadioButton" 
+                                 Content="Стек" 
+                                 GroupName="DataStructureType"
+                                 Checked="StackRadioButton_Checked" />
+                    <RadioButton Style="{StaticResource CustomRadioButtonStyle}" 
+                                 Name="QueueRadioButton" 
+                                 Content="Очередь" 
+                                 GroupName="DataStructureType"
+                                 Checked="QueueRadioButton_Checked" />
+                    <RadioButton Style="{StaticResource CustomRadioButtonStyle}" 
+                                 Name="CustomListRadioButton" 
+                                 Content="Свои связные списки" 
+                                 GroupName="DataStructureType"
+                                 Checked="CustomListRadioButton_Checked" />
                 </StackPanel>
 
-                <!-- Поле ввода для пути к файлу -->
-                <StackPanel Orientation="Vertical" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,20,0">
-                    <TextBlock x:Name="FilePathTextBlock" Text="Другой путь к файлу" Foreground="Black" FontSize="16" FontWeight="Light" TextWrapping="Wrap" />
-                    <Border Height="40" Width="400" Background="White" CornerRadius="10" Padding="0" Margin="0,10,0,0">
-                        <TextBox x:Name="FilePathTextBox" 
-                                 Text="" 
-                                 FontSize="16" 
-                                 FontWeight="Light" 
-                                 Foreground="Black" 
-                                 Background="Transparent" 
-                                 BorderThickness="0" 
-                                 Margin="15,10,15,10" />
+                <!-- Вертикальная линия-разделитель -->
+                <Border x:Name="GraphDivider" Width="1" Background="#D7D7D7" Margin="20,0,5,0" Grid.Column="1"/>
+
+                <!-- Выпадающий список -->
+                <StackPanel Width="260" Orientation="Vertical" VerticalAlignment="Center" Margin="30,0,30,0" Grid.Column="2">
+                    <TextBlock Text="Задание" Foreground="Black" FontSize="20" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0,0,0,5"/>
+                    <Border Height="40" Background="White" CornerRadius="10" Padding="0" Margin="0,5,0,0">
+                        <ComboBox x:Name="TaskSelector" 
+                                  FontSize="14" 
+                                  FontWeight="Light" 
+                                  Foreground="Black" 
+                                  Background="Transparent" 
+                                  BorderThickness="0" 
+                                  Margin="10,0,10,0"
+                                  VerticalContentAlignment="Center"
+                                  HorizontalContentAlignment="Center">
+                        </ComboBox>
                     </Border>
                 </StackPanel>
 
-                <!-- Кнопка "Начать" -->
-                <Button Name="StartButton" 
-                        Click="StartButton_Click" 
-                        Content="Начать" 
-                        FontSize="16" 
-                        FontWeight="Medium" 
-                        Grid.Column="2"
-                        Margin="0,0,30,0"
-                        Style="{StaticResource CustomButtonStyle}"/>
+                <!-- Поле ввода для пути к файлу и кнопка "Начать" -->
+                <StackPanel Orientation="Horizontal" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Right">
+                    <StackPanel Orientation="Vertical" Margin="0,0,10,0">
+                        <TextBlock x:Name="FilePathTextBlock" Text="Другой путь к файлу" Foreground="Black" FontSize="16" FontWeight="Light" TextWrapping="Wrap" />
+                        <Border Height="40" Width="300" Background="White" CornerRadius="10" Padding="0" Margin="0,10,0,0">
+                            <TextBox x:Name="FilePathTextBox" 
+                                     Text="" 
+                                     FontSize="16" 
+                                     FontWeight="Light" 
+                                     Foreground="Black" 
+                                     Background="Transparent" 
+                                     BorderThickness="0" 
+                                     Margin="15,10,1,10" />
+                        </Border>
+                    </StackPanel>
+
+                    <!-- Кнопка "Начать" -->
+                    <Button Name="StartButton" 
+                            Click="StartButton_Click" 
+                            Content="Начать" 
+                            FontSize="16" 
+                            FontWeight="Medium" 
+                            Margin="20,0,5,0"
+                            Style="{StaticResource CustomButtonStyle}"/>
+                </StackPanel>
             </Grid>
         </Border>
     </Grid>

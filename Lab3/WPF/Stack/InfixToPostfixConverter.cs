@@ -15,19 +15,17 @@ namespace Logic
 
         public string Convert(string infixExpression)
         {
-            Stack<char> operatorStack = new Stack<char>(); // Используем ваш стек
+            Stack<char> operatorStack = new Stack<char>();
             StringBuilder postfix = new StringBuilder();
 
             foreach (char token in infixExpression.Replace(" ", ""))
             {
                 if (char.IsDigit(token))
                 {
-                    // Если это число, добавляем к результату
                     postfix.Append(token);
                 }
                 else if (IsOperator(token))
                 {
-                    // Если это оператор
                     while (!operatorStack.IsEmpty() && OperatorPrecedence.ContainsKey(operatorStack.Top()) &&
                            OperatorPrecedence[operatorStack.Top()] >= OperatorPrecedence[token])
                     {
@@ -38,12 +36,10 @@ namespace Logic
                 }
                 else if (token == '(')
                 {
-                    // Открывающая скобка
                     operatorStack.Push(token);
                 }
                 else if (token == ')')
                 {
-                    // Закрывающая скобка
                     while (!operatorStack.IsEmpty() && operatorStack.Top() != '(')
                     {
                         postfix.Append(' ').Append(operatorStack.Pop());
@@ -52,15 +48,14 @@ namespace Logic
                     {
                         throw new InvalidOperationException("Несбалансированные скобки в выражении.");
                     }
-                    operatorStack.Pop(); // Удаляем '(' из стека
+                    operatorStack.Pop();
                 }
                 else
                 {
                     throw new InvalidOperationException($"Недопустимый символ: {token}");
                 }
             }
-
-            // Извлекаем оставшиеся операторы из стека
+            
             while (!operatorStack.IsEmpty())
             {
                 char op = operatorStack.Pop();

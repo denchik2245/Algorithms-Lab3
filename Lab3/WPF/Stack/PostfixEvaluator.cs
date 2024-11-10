@@ -10,8 +10,7 @@ namespace Logic
         {
             stack = new Stack<T>();
         }
-
-        // Метод для вычисления постфиксного выражения из файла
+        
         public double EvaluateExpressionFromFile(string filePath)
         {
             if (!File.Exists(filePath))
@@ -20,21 +19,20 @@ namespace Logic
             string expression = File.ReadAllText(filePath);
             return EvaluateExpression(expression);
         }
-
-        // Метод для вычисления постфиксного выражения из строки
+        
         public double EvaluateExpression(string expression)
         {
-            stack.Clear(); // Очищаем стек перед началом вычислений
+            stack.Clear();
 
             string[] tokens = expression.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
             foreach (string token in tokens)
             {
-                if (double.TryParse(token, out double number)) // Если токен - число
+                if (double.TryParse(token, out double number))
                 {
                     stack.Push((T)Convert.ChangeType(number, typeof(T)));
                 }
-                else // Если токен - операция
+                else
                 {
                     PerformOperation(token);
                 }
@@ -44,12 +42,10 @@ namespace Logic
             {
                 throw new InvalidOperationException("Ошибка: неверное выражение.");
             }
-
-            // Результат — единственный оставшийся элемент в стеке
+            
             return Convert.ToDouble(stack.Pop());
         }
-
-        // Метод для выполнения операций
+        
         private void PerformOperation(string token)
         {
             switch (token)
@@ -89,14 +85,12 @@ namespace Logic
                     throw new InvalidOperationException($"Неизвестная операция: {token}");
             }
         }
-
-        // Метод для преобразования значения типа T в double
+        
         private double TToDouble(T value)
         {
             return Convert.ToDouble(value);
         }
-
-        // Метод для преобразования значения double в тип T
+        
         private T DoubleToT(double value)
         {
             return (T)Convert.ChangeType(value, typeof(T));

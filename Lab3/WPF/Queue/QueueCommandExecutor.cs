@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace Logic
 {
@@ -15,8 +10,7 @@ namespace Logic
         {
             this.queue = queue;
         }
-
-        // Метод для выполнения команд из файла
+        
         public void ExecuteQueueCommandsFromFile(string filePath, Action<string> output)
         {
             try
@@ -27,14 +21,12 @@ namespace Logic
                 {
                     if (operation.StartsWith("1,"))
                     {
-                        // Операция вставки
-                        string value = operation.Substring(2); // Извлекаем значение после "1,"
+                        string value = operation.Substring(2);
                         queue.Enqueue((T)Convert.ChangeType(value, typeof(T)));
                         output($"Элемент '{value}' добавлен в очередь.");
                     }
                     else if (operation == "2")
                     {
-                        // Операция удаления
                         if (!queue.IsEmpty())
                         {
                             T removed = queue.Dequeue();
@@ -47,7 +39,6 @@ namespace Logic
                     }
                     else if (operation == "3")
                     {
-                        // Операция просмотра начала очереди
                         if (!queue.IsEmpty())
                         {
                             output($"Первый элемент в очереди: {queue.Peek()}");
@@ -59,14 +50,12 @@ namespace Logic
                     }
                     else if (operation == "4")
                     {
-                        // Операция проверки на пустоту
                         output(queue.IsEmpty() ? "Очередь пуста." : "Очередь не пуста.");
                     }
                     else if (operation == "5")
                     {
-                        // Операция печати всей очереди
                         output("Содержимое очереди:");
-                        queue.PrintQueue();
+                        queue.PrintQueue(output);
                     }
                     else
                     {
