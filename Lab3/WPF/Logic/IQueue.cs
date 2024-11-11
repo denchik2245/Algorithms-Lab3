@@ -18,6 +18,6 @@ namespace Logic
         // Проверка на пустоту
         bool IsEmpty();
         // Печать всех элементов
-        void PrintQueue();
+        void PrintQueue(Action<string> output);
     }
 }
