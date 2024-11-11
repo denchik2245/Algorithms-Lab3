@@ -1,14 +1,14 @@
 ﻿using System.IO;
 
-namespace Logic
+namespace Lab3.Stack
 {
-    public class PostfixEvaluator<T>
+    public class PostfixEvaluator<T> where T : IComparable<T>
     {
-        private readonly Stack<T> stack;
+        private readonly Lab3.Stack.Stack<T> stack;
 
         public PostfixEvaluator()
         {
-            stack = new Stack<T>();
+            stack = new Lab3.Stack.Stack<T>();
         }
         
         public double EvaluateExpressionFromFile(string filePath)

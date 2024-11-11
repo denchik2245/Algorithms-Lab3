@@ -1,4 +1,4 @@
-﻿namespace Logic
+﻿namespace Lab3.Queue
 {
     public interface IQueue<T>
     {

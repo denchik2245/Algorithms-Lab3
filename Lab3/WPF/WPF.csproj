@@ -22,6 +22,11 @@
       <Content Include="Resources\infix.txt">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <None Remove="Resources\List.txt" />
+      <Content Include="Resources\List.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Resources\List2.txt" />
     </ItemGroup>
 
     <ItemGroup>

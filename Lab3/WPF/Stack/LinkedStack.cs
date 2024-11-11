@@ -1,7 +1,8 @@
 ﻿using System.IO;
-namespace Logic
+
+namespace Lab3.Stack
 {
-    public class Stack<T>
+    public class Stack<T> where T : IComparable<T>
     {
         public CustomLinkedList<T> list = new CustomLinkedList<T>();
         

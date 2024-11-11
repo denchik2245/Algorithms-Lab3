@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Logic
+namespace Lab3.Stack
 {
     public class InfixToPostfixConverter
     {

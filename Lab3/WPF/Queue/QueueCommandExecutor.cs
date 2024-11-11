@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Logic
+namespace Lab3.Queue
 {
     public class QueueCommandExecutor<T>
     {

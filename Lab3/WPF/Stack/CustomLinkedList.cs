@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Logic
+namespace Lab3.Stack
 {
     public class Node<T>
     {
@@ -100,19 +100,19 @@ namespace Logic
 
             while (current != null)
             {
-                next = current.Next; // Сохраняем ссылку на следующий элемент
-                current.Next = prev; // Меняем ссылку текущего элемента на предыдущий
-                prev = current; // Продвигаем указатель prev вперед
-                current = next; // Переходим к следующему элементу
+                next = current.Next;
+                current.Next = prev;
+                prev = current;
+                current = next;
             }
 
-            head = prev; // Переназначаем head на последний элемент
+            head = prev;
         }
 
         // 2. Перенос последнего элемента в начало списка
         public void MoveLastToFirst()
         {
-            if (head == null || head.Next == null) return; // Пустой список или список с одним элементом
+            if (head == null || head.Next == null) return;
 
             Node<T> current = head;
             Node<T> prev = null;
@@ -122,21 +122,20 @@ namespace Logic
                 prev = current;
                 current = current.Next;
             }
-
-            // Теперь current указывает на последний элемент, prev – на предпоследний
-            prev.Next = null; // Отсоединяем последний элемент от предпоследнего
-            current.Next = head; // Перемещаем последний элемент к началу списка
-            head = current; // Обновляем head
+            
+            prev.Next = null;
+            current.Next = head;
+            head = current;
         }
 
         // 2. Перенос первого элемента в конец списка
         public void MoveFirstToLast()
         {
-            if (head == null || head.Next == null) return; // Пустой список или список с одним элементом
+            if (head == null || head.Next == null) return;
 
             Node<T> first = head;
-            head = head.Next; // Обновляем head на второй элемент
-            first.Next = null; // Отсоединяем первый элемент
+            head = head.Next;
+            first.Next = null;
 
             Node<T> current = head;
             while (current.Next != null)
@@ -144,7 +143,7 @@ namespace Logic
                 current = current.Next;
             }
 
-            current.Next = first; // Добавляем первый элемент в конец списка
+            current.Next = first;
         }
 
         // 3. Определение количества различных элементов списка
@@ -334,6 +333,95 @@ namespace Logic
             {
                 newNode.Next = current.Next;
                 current.Next = newNode;
+            }
+        }
+        
+        // 9. Дописывает к списку L список E
+        public void AppendList(CustomLinkedList<T> otherList)
+        {
+            if (head == null)
+            {
+                head = otherList.head;
+                return;
+            }
+
+            Node<T> current = head;
+            while (current.Next != null)
+            {
+                current = current.Next;
+            }
+            current.Next = otherList.head;
+        }
+
+        // 10. Разбивает список по первому вхождению заданного числа
+        public (CustomLinkedList<T>, CustomLinkedList<T>) SplitAtFirstOccurrence(T e)
+        {
+            var firstList = new CustomLinkedList<T>();
+            var secondList = new CustomLinkedList<T>();
+
+            Node<T> current = head;
+            bool found = false;
+
+            while (current != null)
+            {
+                if (!found && current.Data.Equals(e))
+                {
+                    found = true;
+                    secondList.head = current.Next;
+                    break;
+                }
+
+                firstList.AddLast(current.Data);
+                current = current.Next;
+            }
+
+            if (!found)
+            {
+                return (this, secondList);
+            }
+
+            return (firstList, secondList);
+        }
+
+        // 11. Удваивает список, добавляя его копию в конец
+        public void Duplicate()
+        {
+            if (head == null) return;
+
+            var copyList = new CustomLinkedList<T>();
+            Node<T> current = head;
+
+            while (current != null)
+            {
+                copyList.AddLast(current.Data);
+                current = current.Next;
+            }
+
+            AppendList(copyList);
+        }
+
+        // 12. Меняет местами два элемента списка
+        public void SwapElements(T firstElement, T secondElement)
+        {
+            if (head == null) return;
+
+            Node<T> firstNode = null, secondNode = null, current = head;
+
+            while (current != null)
+            {
+                if (current.Data.Equals(firstElement)) firstNode = current;
+                if (current.Data.Equals(secondElement)) secondNode = current;
+
+                if (firstNode != null && secondNode != null) break;
+
+                current = current.Next;
+            }
+
+            if (firstNode != null && secondNode != null)
+            {
+                T temp = firstNode.Data;
+                firstNode.Data = secondNode.Data;
+                secondNode.Data = temp;
             }
         }
     }
