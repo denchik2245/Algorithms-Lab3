@@ -27,6 +27,10 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
       <None Remove="Resources\List2.txt" />
+      <None Remove="Resources\VariedQueueOperations.txt" />
+      <Content Include="Resources\VariedQueueOperations.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>

@@ -25,7 +25,7 @@ namespace Lab3.Stack
             count = 0;
         }
         
-        public int Count // Свойство для получения количества элементов
+        public int Count
         {
             get { return count; }
         }
@@ -35,7 +35,7 @@ namespace Lab3.Stack
             Node<T> newNode = new Node<T>(data);
             newNode.Next = head;
             head = newNode;
-            count++; // Увеличиваем счетчик при добавлении узла
+            count++;
         }
 
         public void AddLast(T data)
@@ -54,7 +54,7 @@ namespace Lab3.Stack
                 }
                 current.Next = newNode;
             }
-            count++; // Увеличиваем счетчик при добавлении узла
+            count++;
         }
 
         public T RemoveFirst()
@@ -63,7 +63,7 @@ namespace Lab3.Stack
 
             T data = head.Data;
             head = head.Next;
-            count--; // Уменьшаем счетчик при удалении узла
+            count--;
             return data;
         }
         

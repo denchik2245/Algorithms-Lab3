@@ -53,6 +53,7 @@ namespace Lab3
             TaskSelector.Items.Clear();
             TaskSelector.Items.Add("Выполнение команд очереди");
             TaskSelector.Items.Add("График команд очереди");
+            TaskSelector.Items.Add("График команд очереди (различный состав)");
         }
         private void PopulateCustomListTasks()
         {
@@ -88,7 +89,7 @@ namespace Lab3
                 FilePathTextBlock.Text = "Другой путь к файлу";
             }
 
-            if (selectedTask == "График команд очереди" || selectedTask == "График команд стека" || selectedTask == "График вычисления ОПЗ")
+            if (selectedTask == "График команд очереди" || selectedTask == "График команд стека" || selectedTask == "График вычисления ОПЗ" || selectedTask == "График команд очереди (различный состав)")
             {
                 DisplayCanvas.Visibility = Visibility.Collapsed;
                 OutputTextBox.Visibility = Visibility.Collapsed;
@@ -395,7 +396,13 @@ namespace Lab3
                         GenerateQueueGraph(generatedFilePath);
                         return;
                     }
-
+                    else if (selectedTaskOption == "График команд очереди (различный состав)")
+                    {
+                        string variedOperationsFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "VariedQueueOperations.txt");
+                        GenerateVariedOperationsFile(variedOperationsFilePath, 1000, 100);
+                        GenerateQueueGraphForVariedOperations(variedOperationsFilePath);
+                        return;
+                    }
                     else if (selectedTaskOption.StartsWith("1. Перевернуть список L") ||
                              selectedTaskOption.StartsWith("2. Меняем местами") ||
                              selectedTaskOption.StartsWith("3. Различные элементы") ||
@@ -744,6 +751,114 @@ namespace Lab3
             }
         }
         
+        //График для очереди (разный состав)
+        private void GenerateQueueGraphForVariedOperations(string filePath)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(filePath))
+                {
+                    filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "inputQueueVaried.txt");
+                }
+
+                if (!File.Exists(filePath))
+                {
+                    OutputTextBox.Text = "Ошибка: Файл не найден.";
+                    return;
+                }
+
+                string[] allOperationsSets = File.ReadAllLines(filePath); // Чтение разных наборов операций, каждая строка - новый набор
+                ChartValues<ObservablePoint> points = new ChartValues<ObservablePoint>();
+                int runs = 10;
+
+                for (int setIndex = 0; setIndex < allOperationsSets.Length; setIndex++)
+                {
+                    string[] operations = allOperationsSets[setIndex].Split(' ');
+
+                    double totalExecutionTime = 0;
+
+                    for (int run = 0; run < runs; run++)
+                    {
+                        CustomQueue<string> queue = new CustomQueue<string>();
+                        Stopwatch executionStopwatch = new Stopwatch();
+                        executionStopwatch.Start();
+
+                        foreach (string operation in operations)
+                        {
+                            if (operation.StartsWith("1,"))
+                            {
+                                string value = operation.Substring(2);
+                                queue.Enqueue(value);
+                            }
+                            else if (operation == "2")
+                            {
+                                if (!queue.IsEmpty())
+                                {
+                                    queue.Dequeue();
+                                }
+                            }
+                            else if (operation == "3")
+                            {
+                                if (!queue.IsEmpty())
+                                {
+                                    queue.Peek();
+                                }
+                            }
+                            else if (operation == "4")
+                            {
+                                queue.IsEmpty();
+                            }
+                            else if (operation == "5")
+                            {
+                                queue.PrintQueue(output => { });
+                            }
+                        }
+
+                        executionStopwatch.Stop();
+                        totalExecutionTime += executionStopwatch.Elapsed.TotalMilliseconds;
+                    }
+
+                    double averageExecutionTime = totalExecutionTime / runs;
+
+                    points.Add(new ObservablePoint(setIndex + 1, averageExecutionTime)); // setIndex + 1 - для отображения набора операций в графике
+                    OutputTextBox.AppendText($"Набор операций {setIndex + 1}, среднее время за {runs} прогонов: {averageExecutionTime:F5} мс\n");
+                }
+
+                MyChart.Series.Clear();
+                MyChart.AxisX.Clear();
+                MyChart.AxisY.Clear();
+
+                MyChart.AxisX.Add(new Axis
+                {
+                    Title = "Набор операций",
+                    LabelFormatter = value => $"Набор {value:F0}",
+                    MinValue = 1
+                });
+
+                MyChart.AxisY.Add(new Axis
+                {
+                    Title = "Время выполнения (мс)",
+                    LabelFormatter = value => value.ToString("F5"),
+                    MinValue = 0
+                });
+
+                MyChart.Series.Add(new LineSeries
+                {
+                    Title = "Среднее время выполнения",
+                    Values = points,
+                    PointGeometry = DefaultGeometries.Circle,
+                    PointGeometrySize = 5,
+                    Fill = System.Windows.Media.Brushes.LightBlue
+                });
+
+                MyChart.Visibility = Visibility.Visible;
+            }
+            catch (Exception ex)
+            {
+                OutputTextBox.Text = $"Ошибка при генерации графика: {ex.Message}";
+            }
+        }
+        
         //Генератор списка для графика
         private void GenerateCommandsFile(string filePath, int numberOfCommands)
         {
@@ -759,6 +874,32 @@ namespace Lab3
 
             File.WriteAllText(filePath, string.Join(" ", commands));
             OutputTextBox.AppendText($"Файл сгенерирован и содержит {numberOfCommands} команд.\n");
+        }
+        
+        // Метод для генерации файла с наборами операций одинаковой длины, но различного состава
+        private void GenerateVariedOperationsFile(string filePath, int operationsCount, int numberOfSets)
+        {
+            Random random = new Random();
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                for (int setIndex = 0; setIndex < numberOfSets; setIndex++)
+                {
+                    List<string> operations = new List<string>();
+                    for (int i = 0; i < operationsCount; i++)
+                    {
+                        int operationType = random.Next(1, 6); // Генерация операций 1-5
+                        if (operationType == 1)
+                        {
+                            operations.Add($"1,{random.Next(1, 100)}"); // Случайное значение для Enqueue
+                        }
+                        else
+                        {
+                            operations.Add(operationType.ToString());
+                        }
+                    }
+                    writer.WriteLine(string.Join(" ", operations)); // Запись набора операций
+                }
+            }
         }
         
         //График ОПЗ
