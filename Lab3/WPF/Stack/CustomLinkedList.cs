@@ -17,10 +17,17 @@ namespace Lab3.Stack
     public class CustomLinkedList<T> where T : IComparable<T>
     {
         private Node<T> head;
+        private int count;
 
         public CustomLinkedList()
         {
             head = null;
+            count = 0;
+        }
+        
+        public int Count // Свойство для получения количества элементов
+        {
+            get { return count; }
         }
         
         public void AddFirst(T data)
@@ -28,8 +35,9 @@ namespace Lab3.Stack
             Node<T> newNode = new Node<T>(data);
             newNode.Next = head;
             head = newNode;
+            count++; // Увеличиваем счетчик при добавлении узла
         }
-        
+
         public void AddLast(T data)
         {
             Node<T> newNode = new Node<T>(data);
@@ -46,14 +54,16 @@ namespace Lab3.Stack
                 }
                 current.Next = newNode;
             }
+            count++; // Увеличиваем счетчик при добавлении узла
         }
-        
+
         public T RemoveFirst()
         {
             if (head == null) throw new InvalidOperationException("Список пуст.");
 
             T data = head.Data;
             head = head.Next;
+            count--; // Уменьшаем счетчик при удалении узла
             return data;
         }
         

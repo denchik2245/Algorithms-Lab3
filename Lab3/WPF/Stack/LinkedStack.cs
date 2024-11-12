@@ -6,6 +6,8 @@ namespace Lab3.Stack
     {
         public CustomLinkedList<T> list = new CustomLinkedList<T>();
         
+        public int Count => list.Count;
+        
         public void Push(T data)
         {
             list.AddFirst(data);
@@ -13,11 +15,19 @@ namespace Lab3.Stack
         
         public T Pop()
         {
+            if (IsEmpty())
+            {
+                throw new InvalidOperationException("Попытка извлечения элемента из пустого стека.");
+            }
             return list.RemoveFirst();
         }
-        
+
         public T Top()
         {
+            if (IsEmpty())
+            {
+                throw new InvalidOperationException("Попытка просмотра верхнего элемента в пустом стеке.");
+            }
             return list.GetFirst();
         }
         

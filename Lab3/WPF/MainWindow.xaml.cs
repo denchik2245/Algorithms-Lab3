@@ -6,6 +6,8 @@ using Lab3.Stack;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
+using CustomStack = Lab3.Stack.Stack<string>;
+using GenericStack = System.Collections.Generic.Stack<string>;
 
 namespace Lab3
 {
@@ -50,7 +52,7 @@ namespace Lab3
         {
             TaskSelector.Items.Clear();
             TaskSelector.Items.Add("Выполнение команд очереди");
-            TaskSelector.Items.Add("График");
+            TaskSelector.Items.Add("График команд очереди");
         }
         private void PopulateCustomListTasks()
         {
@@ -86,7 +88,7 @@ namespace Lab3
                 FilePathTextBlock.Text = "Другой путь к файлу";
             }
 
-            if (selectedTask == "График" || selectedTask == "График команд стека" || selectedTask == "График вычисления ОПЗ")
+            if (selectedTask == "График команд очереди" || selectedTask == "График команд стека" || selectedTask == "График вычисления ОПЗ")
             {
                 DisplayCanvas.Visibility = Visibility.Collapsed;
                 OutputTextBox.Visibility = Visibility.Collapsed;
@@ -194,34 +196,26 @@ namespace Lab3
             }
             else if (selectedTaskOption.StartsWith("7. Удалить все элементы Е"))
             {
-                // Чтение списка из файла List.txt
                 string listFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "List.txt");
                 if (!File.Exists(listFilePath))
                 {
                     OutputTextBox.Text = "Ошибка: Файл List.txt не найден.";
                     return;
                 }
-
-                // Загружаем список из файла
+                
                 var list = LoadListFromFile(listFilePath);
-
-                // Проверяем, что список загружен
+                
                 if (list == null || list.IsEmpty())
                 {
                     OutputTextBox.Text = "Ошибка: Список из файла пуст или не был загружен.";
                     return;
                 }
-
-                // Выводим изначальный список
+                
                 OutputTextBox.Text = "Изначальный список: " + list.GetAllElementsAsString() + Environment.NewLine;
-
-                // Используем значение из FilePathTextBox как элемент для удаления
+                
                 if (int.TryParse(FilePathTextBox.Text, out int elementToRemove))
                 {
-                    // Удаляем все вхождения элемента
                     list.RemoveAllOccurrences(elementToRemove);
-
-                    // Проверяем результат и выводим модифицированный список
                     string result = list.GetAllElementsAsString();
                     OutputTextBox.Text += result != null ? "Список после удаления всех вхождений элемента " + elementToRemove + ": " + result : "Ошибка: Список не был модифицирован.";
                 }
@@ -232,18 +226,15 @@ namespace Lab3
             }
             else if (selectedTaskOption.StartsWith("8. Вставка элемента перед первым вхождением"))
             {
-                // Чтение списка из файла List.txt
                 string listFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "List.txt");
                 if (!File.Exists(listFilePath))
                 {
                     OutputTextBox.Text = "Ошибка: Файл List.txt не найден.";
                     return;
                 }
-
-                // Загружаем список из файла
+                
                 var list = LoadListFromFile(listFilePath);
-
-                // Проверяем, что список загружен
+                
                 if (list == null || list.IsEmpty())
                 {
                     OutputTextBox.Text = "Ошибка: Список из файла пуст или не был загружен.";
@@ -251,8 +242,7 @@ namespace Lab3
                 }
 
                 OutputTextBox.Text = "Изначальный список: " + list.GetAllElementsAsString() + Environment.NewLine;
-
-                // Чтение двух чисел (новый элемент и целевой элемент) из пользовательского ввода
+                
                 string[] inputElements = FilePathTextBox.Text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
                 if (inputElements.Length == 2 && int.TryParse(inputElements[0], out int newElement) && int.TryParse(inputElements[1], out int targetElement))
                 {
@@ -266,18 +256,15 @@ namespace Lab3
             }
             else if (selectedTaskOption.StartsWith("9. Дописать к списку L список E"))
             {
-                // Чтение списка из файла List.txt
                 string listFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "List.txt");
                 if (!File.Exists(listFilePath))
                 {
                     OutputTextBox.Text = "Ошибка: Файл List.txt не найден.";
                     return;
                 }
-
-                // Загружаем список из файла
+                
                 var list = LoadListFromFile(listFilePath);
-
-                // Проверяем, что список загружен
+                
                 if (list == null || list.IsEmpty())
                 {
                     OutputTextBox.Text = "Ошибка: Список из файла пуст или не был загружен.";
@@ -285,8 +272,6 @@ namespace Lab3
                 }
 
                 OutputTextBox.Text = "Изначальный список L: " + list.GetAllElementsAsString() + Environment.NewLine;
-
-                // Чтение второго списка из пользовательского ввода
                 string[] inputElements = FilePathTextBox.Text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
                 var secondList = new CustomLinkedList<int>();
 
@@ -297,32 +282,27 @@ namespace Lab3
                         secondList.AddLast(number);
                     }
                 }
-
-                // Проверка на пустой второй список
+                
                 if (secondList.IsEmpty())
                 {
                     OutputTextBox.Text += "Ошибка: Второй список пуст. Введите элементы через пробел.";
                     return;
                 }
-
-                // Дописываем второй список к первому
+                
                 list.AppendList(secondList);
                 OutputTextBox.Text += "Список L после добавления списка E: " + list.GetAllElementsAsString();
             }
             else if (selectedTaskOption.StartsWith("10. Разбить список по первому вхождению"))
             {
-                // Чтение списка из файла List.txt
                 string listFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "List.txt");
                 if (!File.Exists(listFilePath))
                 {
                     OutputTextBox.Text = "Ошибка: Файл List.txt не найден.";
                     return;
                 }
-
-                // Загружаем список из файла
+                
                 var list = LoadListFromFile(listFilePath);
-
-                // Проверяем, что список загружен
+                
                 if (list == null || list.IsEmpty())
                 {
                     OutputTextBox.Text = "Ошибка: Список из файла пуст или не был загружен.";
@@ -330,8 +310,7 @@ namespace Lab3
                 }
 
                 OutputTextBox.Text = "Изначальный список: " + list.GetAllElementsAsString() + Environment.NewLine;
-
-                // Используем значение из FilePathTextBox как элемент для разделения
+                
                 if (int.TryParse(FilePathTextBox.Text, out int splitValue))
                 {
                     var (firstList, secondList) = list.SplitAtFirstOccurrence(splitValue);
@@ -346,18 +325,15 @@ namespace Lab3
             }
             else if (selectedTaskOption.StartsWith("12. Поменять местами два элемента"))
             {
-                // Чтение списка из файла List.txt
                 string listFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "List.txt");
                 if (!File.Exists(listFilePath))
                 {
                     OutputTextBox.Text = "Ошибка: Файл List.txt не найден.";
                     return;
                 }
-
-                // Загружаем список из файла
+                
                 var list = LoadListFromFile(listFilePath);
-
-                // Проверяем, что список загружен
+                
                 if (list == null || list.IsEmpty())
                 {
                     OutputTextBox.Text = "Ошибка: Список из файла пуст или не был загружен.";
@@ -365,8 +341,7 @@ namespace Lab3
                 }
 
                 OutputTextBox.Text = "Изначальный список: " + list.GetAllElementsAsString() + Environment.NewLine;
-
-                // Чтение двух элементов для обмена
+                
                 string[] inputElements = FilePathTextBox.Text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
                 if (inputElements.Length == 2 && int.TryParse(inputElements[0], out int firstElement) && int.TryParse(inputElements[1], out int secondElement))
                 {
@@ -380,7 +355,6 @@ namespace Lab3
             }
             else
             {
-                // Логика для остальных задач, где filePath может быть важен
                 string filePath = FilePathTextBox.Text;
                 if (string.IsNullOrWhiteSpace(filePath))
                 {
@@ -410,8 +384,15 @@ namespace Lab3
                     else if (selectedTaskOption == "График вычисления ОПЗ")
                     {
                         string generatedFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "Generator2.txt");
-                        GeneratePostfixExpressionsFile(generatedFilePath, 1000);
+                        GeneratePostfixExpressionsFile(generatedFilePath, 50);
                         GeneratePostfixGraph(generatedFilePath);
+                        return;
+                    }
+                    else if (selectedTaskOption == "График команд очереди")
+                    {
+                        string generatedFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "Generator.txt");
+                        GenerateCommandsFile(generatedFilePath, 1000);
+                        GenerateQueueGraph(generatedFilePath);
                         return;
                     }
 
@@ -424,15 +405,12 @@ namespace Lab3
                         filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "List.txt");
                     }
                 }
-
-                // Проверка на существование файла для остальных задач
+                
                 if ((selectedTaskOption == "Выполнение команд стека" || selectedTaskOption == "Вычисление ОПЗ" || selectedTaskOption == "Выполнение команд очереди" || selectedTaskOption == "График команд стека") && !File.Exists(filePath))
                 {
                     OutputTextBox.Text = "Ошибка: Указан неверный путь к файлу.";
                     return;
                 }
-
-                // Обработка задач, которые требуют filePath
                 if (selectedTaskOption == "Выполнение команд стека")
                 {
                     ExecuteStackCommands(filePath);
@@ -549,7 +527,7 @@ namespace Lab3
             }
         }
         
-        //График для стека
+        //График по количеству элементов
         private void GenerateGraph(string filePath)
         {
             try
@@ -558,18 +536,19 @@ namespace Lab3
                 {
                     filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "input.txt");
                 }
-                
+
                 if (!File.Exists(filePath))
                 {
                     OutputTextBox.Text = "Ошибка: Файл не найден.";
                     return;
                 }
-                
-                string[] operations = File.ReadAllText(filePath).Split(' ');
-                
-                ChartValues<ObservablePoint> points = new ChartValues<ObservablePoint>();
 
-                for (int i = 0; i < operations.Length; i++)
+                string[] operations = File.ReadAllText(filePath).Split(' ');
+
+                ChartValues<ObservablePoint> points = new ChartValues<ObservablePoint>();
+                int incrementStep = 5;
+
+                for (int elementCount = incrementStep; elementCount <= operations.Length; elementCount += incrementStep)
                 {
                     double totalExecutionTime = 0;
                     int runs = 10;
@@ -579,35 +558,37 @@ namespace Lab3
                         Lab3.Stack.Stack<string> stack = new Lab3.Stack.Stack<string>();
                         Stopwatch executionStopwatch = new Stopwatch();
                         executionStopwatch.Start();
-
-                        // Выполнение операции
-                        string operation = operations[i];
-                        if (operation.StartsWith("1,"))
+                        
+                        for (int i = 0; i < elementCount; i++)
                         {
-                            string value = operation.Substring(2);
-                            stack.Push(value);
-                        }
-                        else if (operation == "2")
-                        {
-                            if (!stack.IsEmpty())
+                            string operation = operations[i];
+                            if (operation.StartsWith("1,"))
                             {
-                                stack.Pop();
+                                string value = operation.Substring(2);
+                                stack.Push(value);
                             }
-                        }
-                        else if (operation == "3")
-                        {
-                            if (!stack.IsEmpty())
+                            else if (operation == "2")
                             {
-                                stack.Top();
+                                if (!stack.IsEmpty())
+                                {
+                                    stack.Pop();
+                                }
                             }
-                        }
-                        else if (operation == "4")
-                        {
-                            stack.IsEmpty();
-                        }
-                        else if (operation == "5")
-                        {
-                            stack.Print(output => { });
+                            else if (operation == "3")
+                            {
+                                if (!stack.IsEmpty())
+                                {
+                                    stack.Top();
+                                }
+                            }
+                            else if (operation == "4")
+                            {
+                                stack.IsEmpty();
+                            }
+                            else if (operation == "5")
+                            {
+                                stack.Print(output => { });
+                            }
                         }
 
                         executionStopwatch.Stop();
@@ -615,22 +596,128 @@ namespace Lab3
                     }
 
                     double averageExecutionTime = totalExecutionTime / runs;
-
-                    // Добавление точки на график
-                    points.Add(new ObservablePoint(i + 1, averageExecutionTime));
-                    OutputTextBox.AppendText($"Операция {i + 1} среднее время за {runs} прогонов: {averageExecutionTime:F5} мс\n");
+                    points.Add(new ObservablePoint(elementCount, averageExecutionTime));
+                    OutputTextBox.AppendText($"Количество элементов: {elementCount}, среднее время за {runs} прогонов: {averageExecutionTime:F5} мс\n");
                 }
-
-                // Настройка и отображение графика
+                
                 MyChart.Series.Clear();
                 MyChart.AxisX.Clear();
                 MyChart.AxisY.Clear();
 
                 MyChart.AxisX.Add(new Axis
                 {
-                    Title = "Номер операции",
+                    Title = "Количество элементов",
                     LabelFormatter = value => value.ToString("F0"),
-                    MinValue = 1
+                    MinValue = incrementStep
+                });
+
+                MyChart.AxisY.Add(new Axis
+                {
+                    Title = "Время выполнения (мс)",
+                    LabelFormatter = value => value.ToString("F5"),
+                    MinValue = 0
+                });
+
+                MyChart.Series.Add(new LineSeries
+                {
+                    Title = "Среднее время выполнения",
+                    Values = points,
+                    PointGeometry = DefaultGeometries.Circle,
+                    PointGeometrySize = 5,
+                    Fill = System.Windows.Media.Brushes.LightBlue
+                });
+
+                MyChart.Visibility = Visibility.Visible;
+            }
+            catch (Exception ex)
+            {
+                OutputTextBox.Text = $"Ошибка при генерации графика: {ex.Message}";
+            }
+        }
+        
+        //График для очереди
+        private void GenerateQueueGraph(string filePath)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(filePath))
+                {
+                    filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "inputQueue.txt");
+                }
+
+                if (!File.Exists(filePath))
+                {
+                    OutputTextBox.Text = "Ошибка: Файл не найден.";
+                    return;
+                }
+
+                string[] operations = File.ReadAllText(filePath).Split(' ');
+
+                ChartValues<ObservablePoint> points = new ChartValues<ObservablePoint>();
+                int incrementStep = 5;
+
+                for (int elementCount = incrementStep; elementCount <= operations.Length; elementCount += incrementStep)
+                {
+                    double totalExecutionTime = 0;
+                    int runs = 10;
+
+                    for (int run = 0; run < runs; run++)
+                    {
+                        CustomQueue<string> queue = new CustomQueue<string>();
+                        Stopwatch executionStopwatch = new Stopwatch();
+                        executionStopwatch.Start();
+                        
+                        for (int i = 0; i < elementCount; i++)
+                        {
+                            string operation = operations[i];
+                            if (operation.StartsWith("1,"))
+                            {
+                                string value = operation.Substring(2);
+                                queue.Enqueue(value);
+                            }
+                            else if (operation == "2")
+                            {
+                                if (!queue.IsEmpty())
+                                {
+                                    queue.Dequeue();
+                                }
+                            }
+                            else if (operation == "3")
+                            {
+                                if (!queue.IsEmpty())
+                                {
+                                    queue.Peek();
+                                }
+                            }
+                            else if (operation == "4")
+                            {
+                                queue.IsEmpty();
+                            }
+                            else if (operation == "5")
+                            {
+                                queue.PrintQueue(output => { });
+                            }
+                        }
+
+                        executionStopwatch.Stop();
+                        totalExecutionTime += executionStopwatch.Elapsed.TotalMilliseconds;
+                    }
+
+                    double averageExecutionTime = totalExecutionTime / runs;
+                    
+                    points.Add(new ObservablePoint(elementCount, averageExecutionTime));
+                    OutputTextBox.AppendText($"Количество элементов: {elementCount}, среднее время за {runs} прогонов: {averageExecutionTime:F5} мс\n");
+                }
+                
+                MyChart.Series.Clear();
+                MyChart.AxisX.Clear();
+                MyChart.AxisY.Clear();
+
+                MyChart.AxisX.Add(new Axis
+                {
+                    Title = "Количество элементов",
+                    LabelFormatter = value => value.ToString("F0"),
+                    MinValue = incrementStep
                 });
 
                 MyChart.AxisY.Add(new Axis
@@ -681,7 +768,7 @@ namespace Lab3
             {
                 if (string.IsNullOrWhiteSpace(filePath))
                 {
-                    filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "Generator2.txt");
+                    filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "inputPostfix.txt");
                 }
 
                 if (!File.Exists(filePath))
@@ -690,57 +777,60 @@ namespace Lab3
                     return;
                 }
 
-                string[] expressions = File.ReadAllLines(filePath);
-                ChartValues<ObservablePoint> points = new ChartValues<ObservablePoint>();
+                string[] expressions = File.ReadAllText(filePath).Split('\n');
 
-                for (int i = 0; i < expressions.Length; i++)
+                ChartValues<ObservablePoint> points = new ChartValues<ObservablePoint>();
+                int incrementStep = 1; // Количество выражений для оценки
+
+                for (int expressionCount = incrementStep; expressionCount <= expressions.Length; expressionCount += incrementStep)
                 {
                     double totalExecutionTime = 0;
-                    int runs = 10;
+                    int runs = 15; // Количество повторов для усреднения
 
                     for (int run = 0; run < runs; run++)
                     {
+                        PostfixEvaluator<double> evaluator = new PostfixEvaluator<double>();
                         Stopwatch executionStopwatch = new Stopwatch();
                         executionStopwatch.Start();
 
-                        // Вычисление выражения
-                        PostfixEvaluator<double> evaluator = new PostfixEvaluator<double>();
-                        evaluator.EvaluateExpression(expressions[i]);
+                        for (int i = 0; i < expressionCount; i++)
+                        {
+                            try
+                            {
+                                evaluator.EvaluateExpression(expressions[i]);
+                            }
+                            catch (Exception ex)
+                            {
+                                // Обработка ошибок, связанных с некорректным выражением
+                                OutputTextBox.AppendText($"Ошибка при вычислении выражения: {ex.Message}\n");
+                            }
+                        }
 
                         executionStopwatch.Stop();
                         totalExecutionTime += executionStopwatch.Elapsed.TotalMilliseconds;
                     }
 
                     double averageExecutionTime = totalExecutionTime / runs;
-
-                    // Добавление точки на график
-                    points.Add(new ObservablePoint(i + 1, averageExecutionTime));
-                    OutputTextBox.AppendText($"Выражение {i + 1} среднее время за {runs} прогонов: {averageExecutionTime:F5} мс\n");
+                    points.Add(new ObservablePoint(expressionCount, averageExecutionTime));
+                    OutputTextBox.AppendText($"Количество выражений: {expressionCount}, среднее время за {runs} прогонов: {averageExecutionTime:F5} мс\n");
                 }
 
-                // Настройка и отображение графика
                 MyChart.Series.Clear();
                 MyChart.AxisX.Clear();
                 MyChart.AxisY.Clear();
 
                 MyChart.AxisX.Add(new Axis
                 {
-                    Title = "Номер выражения",
+                    Title = "Количество выражений",
                     LabelFormatter = value => value.ToString("F0"),
-                    MinValue = 1,
+                    MinValue = incrementStep
                 });
 
                 MyChart.AxisY.Add(new Axis
                 {
                     Title = "Время выполнения (мс)",
                     LabelFormatter = value => value.ToString("F5"),
-                    MinValue = 0,
-                    MaxValue = points.Max(p => p.Y) * 0.1, // Установка максимального значения
-                    Separator = new Separator
-                    {
-                        Step = (points.Max(p => p.Y) * 0.05) / 4, // Деление диапазона на 4 части для отображения 5 значений
-                        IsEnabled = true
-                    }
+                    MinValue = 0
                 });
 
                 MyChart.Series.Add(new LineSeries
@@ -760,40 +850,41 @@ namespace Lab3
             }
         }
         
-        //Генератор списка выражений для графика
+        // Генератор выражений для графика
         private void GeneratePostfixExpressionsFile(string filePath, int numberOfExpressions)
         {
-            string[] possibleOperands = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" };
-            string[] possibleOperators = { "+", "-", "*", "/", "ln", "cos", "sin", "sqrt" };
+            string[] possibleTokens = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+                "+", "-", "*", "/", "^", "sin", "cos", "ln", "sqrt" };
             Random random = new Random();
             List<string> expressions = new List<string>();
 
             for (int i = 0; i < numberOfExpressions; i++)
             {
-                int operandCount = random.Next(3, 6); // Количество операндов (минимум 3)
+                int expressionLength = random.Next(3, 8); // Длина выражения от 3 до 8 токенов
                 List<string> expression = new List<string>();
 
-                for (int j = 0; j < operandCount; j++)
+                for (int j = 0; j < expressionLength; j++)
                 {
-                    int operandIndex = random.Next(possibleOperands.Length);
-                    expression.Add(possibleOperands[operandIndex]);
+                    int randomIndex = random.Next(possibleTokens.Length);
+                    string token = possibleTokens[randomIndex];
+
+                    // Добавление функций с аргументом, если это необходимо
+                    if (token == "sin" || token == "cos" || token == "ln" || token == "sqrt")
+                    {
+                        expression.Add($"{token}(1)");
+                    }
+                    else
+                    {
+                        expression.Add(token);
+                    }
                 }
 
-                // Добавление операторов
-                for (int j = 0; j < operandCount - 1; j++)
-                {
-                    int operatorIndex = random.Next(possibleOperators.Length);
-                    expression.Add(possibleOperators[operatorIndex]);
-                }
-
-                // Перемешивание, чтобы сохранить корректность постфиксной записи
                 expressions.Add(string.Join(" ", expression));
             }
 
             File.WriteAllText(filePath, string.Join("\n", expressions));
-            OutputTextBox.AppendText($"Файл сгенерирован и содержит {numberOfExpressions} выражений в постфиксной записи.\n");
+            OutputTextBox.AppendText($"Файл сгенерирован и содержит {numberOfExpressions} выражений.\n");
         }
-
         
         //Выполнение команд очереди
         private void ExecuteQueueCommands(string filePath)
@@ -881,7 +972,6 @@ namespace Lab3
                 }
                 else if (operation == "SwapElements")
                 {
-                    // Ввод двух элементов для обмена через пробел
                     string[] inputElements = FilePathTextBox.Text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
                     if (inputElements.Length == 2 && int.TryParse(inputElements[0], out int firstElement) && int.TryParse(inputElements[1], out int secondElement))
                     {
@@ -895,7 +985,6 @@ namespace Lab3
                 }
                 else if (operation == "AppendList")
                 {
-                    // Ввод второго списка пользователем через пробел
                     string[] inputElements = FilePathTextBox.Text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
                     var secondList = new CustomLinkedList<int>();
 
