@@ -6,8 +6,6 @@ using Lab3.Stack;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
-using CustomStack = Lab3.Stack.Stack<string>;
-using GenericStack = System.Collections.Generic.Stack<string>;
 
 namespace Lab3
 {
@@ -46,6 +44,7 @@ namespace Lab3
             TaskSelector.Items.Add("Вычисление ОПЗ");
             TaskSelector.Items.Add("Перевод записи в ОПЗ");
             TaskSelector.Items.Add("График команд стека");
+            TaskSelector.Items.Add("График команд стека (Стек C#)");
             TaskSelector.Items.Add("График вычисления ОПЗ");
         }
         private void PopulateQueueTasks()
@@ -54,6 +53,7 @@ namespace Lab3
             TaskSelector.Items.Add("Выполнение команд очереди");
             TaskSelector.Items.Add("График команд очереди");
             TaskSelector.Items.Add("График команд очереди (различный состав)");
+            TaskSelector.Items.Add("График команд очереди (стандарт C#)");
         }
         private void PopulateCustomListTasks()
         {
@@ -89,7 +89,7 @@ namespace Lab3
                 FilePathTextBlock.Text = "Другой путь к файлу";
             }
 
-            if (selectedTask == "График команд очереди" || selectedTask == "График команд стека" || selectedTask == "График вычисления ОПЗ" || selectedTask == "График команд очереди (различный состав)")
+            if (selectedTask == "График команд очереди" || selectedTask == "График команд стека" || selectedTask == "График вычисления ОПЗ" || selectedTask == "График команд очереди (различный состав)" || selectedTask == "График команд стека (Стек C#)" || selectedTask == "График команд очереди (стандарт C#)")
             {
                 DisplayCanvas.Visibility = Visibility.Collapsed;
                 OutputTextBox.Visibility = Visibility.Collapsed;
@@ -382,6 +382,13 @@ namespace Lab3
                         GenerateGraph(generatedFilePath);
                         return;
                     }
+                    else if (selectedTaskOption == "График команд стека (Стек C#)")
+                    {
+                        string generatedFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "Generator.txt");
+                        GenerateCommandsFile(generatedFilePath, 1000);
+                        GenerateGraph2(generatedFilePath);
+                        return;
+                    }
                     else if (selectedTaskOption == "График вычисления ОПЗ")
                     {
                         string generatedFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "Generator2.txt");
@@ -394,6 +401,13 @@ namespace Lab3
                         string generatedFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "Generator.txt");
                         GenerateCommandsFile(generatedFilePath, 1000);
                         GenerateQueueGraph(generatedFilePath);
+                        return;
+                    }
+                    else if (selectedTaskOption == "График команд очереди (стандарт C#)")
+                    {
+                        string generatedFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "Generator.txt");
+                        GenerateCommandsFile(generatedFilePath, 1000);
+                        GenerateStandardQueueGraph(generatedFilePath);
                         return;
                     }
                     else if (selectedTaskOption == "График команд очереди (различный состав)")
@@ -642,6 +656,110 @@ namespace Lab3
             }
         }
         
+        //График стека C#
+        private void GenerateGraph2(string filePath)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(filePath))
+                {
+                    filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "input.txt");
+                }
+
+                if (!File.Exists(filePath))
+                {
+                    OutputTextBox.Text = "Ошибка: Файл не найден.";
+                    return;
+                }
+
+                string[] operations = File.ReadAllText(filePath).Split(' ');
+
+                ChartValues<ObservablePoint> points = new ChartValues<ObservablePoint>();
+                int incrementStep = 5;
+
+                for (int elementCount = incrementStep; elementCount <= operations.Length; elementCount += incrementStep)
+                {
+                    double totalExecutionTime = 0;
+                    int runs = 10;
+
+                    for (int run = 0; run < runs; run++)
+                    {
+                        var stack = new System.Collections.Generic.Stack<string>();
+                        Stopwatch executionStopwatch = new Stopwatch();
+                        executionStopwatch.Start();
+
+                        for (int i = 0; i < elementCount; i++)
+                        {
+                            string operation = operations[i];
+                            if (operation.StartsWith("1,"))
+                            {
+                                string value = operation.Substring(2);
+                                stack.Push(value);
+                            }
+                            else if (operation == "2")
+                            {
+                                if (stack.Count > 0)
+                                {
+                                    stack.Pop();
+                                }
+                            }
+                            else if (operation == "3")
+                            {
+                                if (stack.Count > 0)
+                                {
+                                    _ = stack.Peek();
+                                }
+                            }
+                            else if (operation == "4")
+                            {
+                                _ = stack.Count == 0;
+                            }
+                        }
+
+                        executionStopwatch.Stop();
+                        totalExecutionTime += executionStopwatch.Elapsed.TotalMilliseconds;
+                    }
+
+                    double averageExecutionTime = totalExecutionTime / runs;
+                    points.Add(new ObservablePoint(elementCount, averageExecutionTime));
+                    OutputTextBox.AppendText($"Количество элементов: {elementCount}, среднее время за {runs} прогонов: {averageExecutionTime:F5} мс\n");
+                }
+
+                MyChart.Series.Clear();
+                MyChart.AxisX.Clear();
+                MyChart.AxisY.Clear();
+
+                MyChart.AxisX.Add(new Axis
+                {
+                    Title = "Количество элементов",
+                    LabelFormatter = value => value.ToString("F0"),
+                    MinValue = incrementStep
+                });
+
+                MyChart.AxisY.Add(new Axis
+                {
+                    Title = "Время выполнения (мс)",
+                    LabelFormatter = value => value.ToString("F5"),
+                    MinValue = 0
+                });
+
+                MyChart.Series.Add(new LineSeries
+                {
+                    Title = "Среднее время выполнения",
+                    Values = points,
+                    PointGeometry = DefaultGeometries.Circle,
+                    PointGeometrySize = 5,
+                    Fill = System.Windows.Media.Brushes.LightBlue
+                });
+
+                MyChart.Visibility = Visibility.Visible;
+            }
+            catch (Exception ex)
+            {
+                OutputTextBox.Text = $"Ошибка при генерации графика: {ex.Message}";
+            }
+        }
+        
         //График для очереди
         private void GenerateQueueGraph(string filePath)
         {
@@ -767,7 +885,7 @@ namespace Lab3
                     return;
                 }
 
-                string[] allOperationsSets = File.ReadAllLines(filePath); // Чтение разных наборов операций, каждая строка - новый набор
+                string[] allOperationsSets = File.ReadAllLines(filePath);
                 ChartValues<ObservablePoint> points = new ChartValues<ObservablePoint>();
                 int runs = 10;
 
@@ -820,7 +938,7 @@ namespace Lab3
 
                     double averageExecutionTime = totalExecutionTime / runs;
 
-                    points.Add(new ObservablePoint(setIndex + 1, averageExecutionTime)); // setIndex + 1 - для отображения набора операций в графике
+                    points.Add(new ObservablePoint(setIndex + 1, averageExecutionTime));
                     OutputTextBox.AppendText($"Набор операций {setIndex + 1}, среднее время за {runs} прогонов: {averageExecutionTime:F5} мс\n");
                 }
 
@@ -833,6 +951,115 @@ namespace Lab3
                     Title = "Набор операций",
                     LabelFormatter = value => $"Набор {value:F0}",
                     MinValue = 1
+                });
+
+                MyChart.AxisY.Add(new Axis
+                {
+                    Title = "Время выполнения (мс)",
+                    LabelFormatter = value => value.ToString("F5"),
+                    MinValue = 0
+                });
+
+                MyChart.Series.Add(new LineSeries
+                {
+                    Title = "Среднее время выполнения",
+                    Values = points,
+                    PointGeometry = DefaultGeometries.Circle,
+                    PointGeometrySize = 5,
+                    Fill = System.Windows.Media.Brushes.LightBlue
+                });
+
+                MyChart.Visibility = Visibility.Visible;
+            }
+            catch (Exception ex)
+            {
+                OutputTextBox.Text = $"Ошибка при генерации графика: {ex.Message}";
+            }
+        }
+        
+        //График очереди (Стандарт C#)
+        private void GenerateStandardQueueGraph(string filePath)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(filePath))
+                {
+                    filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "inputQueue.txt");
+                }
+
+                if (!File.Exists(filePath))
+                {
+                    OutputTextBox.Text = "Ошибка: Файл не найден.";
+                    return;
+                }
+
+                string[] operations = File.ReadAllText(filePath).Split(' ');
+
+                ChartValues<ObservablePoint> points = new ChartValues<ObservablePoint>();
+                int incrementStep = 5;
+
+                for (int elementCount = incrementStep; elementCount <= operations.Length; elementCount += incrementStep)
+                {
+                    double totalExecutionTime = 0;
+                    int runs = 10;
+
+                    for (int run = 0; run < runs; run++)
+                    {
+                        StandardQueue<string> queue = new StandardQueue<string>();
+                        Stopwatch executionStopwatch = new Stopwatch();
+                        executionStopwatch.Start();
+
+                        for (int i = 0; i < elementCount; i++)
+                        {
+                            string operation = operations[i];
+                            if (operation.StartsWith("1,"))
+                            {
+                                string value = operation.Substring(2);
+                                queue.Enqueue(value);
+                            }
+                            else if (operation == "2")
+                            {
+                                if (!queue.IsEmpty())
+                                {
+                                    queue.Dequeue();
+                                }
+                            }
+                            else if (operation == "3")
+                            {
+                                if (!queue.IsEmpty())
+                                {
+                                    queue.Peek();
+                                }
+                            }
+                            else if (operation == "4")
+                            {
+                                queue.IsEmpty();
+                            }
+                            else if (operation == "5")
+                            {
+                                queue.PrintQueue(output => { });
+                            }
+                        }
+
+                        executionStopwatch.Stop();
+                        totalExecutionTime += executionStopwatch.Elapsed.TotalMilliseconds;
+                    }
+
+                    double averageExecutionTime = totalExecutionTime / runs;
+
+                    points.Add(new ObservablePoint(elementCount, averageExecutionTime));
+                    OutputTextBox.AppendText($"Количество элементов: {elementCount}, среднее время за {runs} прогонов: {averageExecutionTime:F5} мс\n");
+                }
+
+                MyChart.Series.Clear();
+                MyChart.AxisX.Clear();
+                MyChart.AxisY.Clear();
+
+                MyChart.AxisX.Add(new Axis
+                {
+                    Title = "Количество элементов",
+                    LabelFormatter = value => value.ToString("F0"),
+                    MinValue = incrementStep
                 });
 
                 MyChart.AxisY.Add(new Axis
@@ -887,17 +1114,17 @@ namespace Lab3
                     List<string> operations = new List<string>();
                     for (int i = 0; i < operationsCount; i++)
                     {
-                        int operationType = random.Next(1, 6); // Генерация операций 1-5
+                        int operationType = random.Next(1, 6);
                         if (operationType == 1)
                         {
-                            operations.Add($"1,{random.Next(1, 100)}"); // Случайное значение для Enqueue
+                            operations.Add($"1,{random.Next(1, 100)}");
                         }
                         else
                         {
                             operations.Add(operationType.ToString());
                         }
                     }
-                    writer.WriteLine(string.Join(" ", operations)); // Запись набора операций
+                    writer.WriteLine(string.Join(" ", operations));
                 }
             }
         }
@@ -921,12 +1148,12 @@ namespace Lab3
                 string[] expressions = File.ReadAllText(filePath).Split('\n');
 
                 ChartValues<ObservablePoint> points = new ChartValues<ObservablePoint>();
-                int incrementStep = 1; // Количество выражений для оценки
+                int incrementStep = 1;
 
                 for (int expressionCount = incrementStep; expressionCount <= expressions.Length; expressionCount += incrementStep)
                 {
                     double totalExecutionTime = 0;
-                    int runs = 15; // Количество повторов для усреднения
+                    int runs = 15;
 
                     for (int run = 0; run < runs; run++)
                     {
@@ -942,7 +1169,6 @@ namespace Lab3
                             }
                             catch (Exception ex)
                             {
-                                // Обработка ошибок, связанных с некорректным выражением
                                 OutputTextBox.AppendText($"Ошибка при вычислении выражения: {ex.Message}\n");
                             }
                         }
@@ -1001,15 +1227,14 @@ namespace Lab3
 
             for (int i = 0; i < numberOfExpressions; i++)
             {
-                int expressionLength = random.Next(3, 8); // Длина выражения от 3 до 8 токенов
+                int expressionLength = random.Next(3, 8);
                 List<string> expression = new List<string>();
 
                 for (int j = 0; j < expressionLength; j++)
                 {
                     int randomIndex = random.Next(possibleTokens.Length);
                     string token = possibleTokens[randomIndex];
-
-                    // Добавление функций с аргументом, если это необходимо
+                    
                     if (token == "sin" || token == "cos" || token == "ln" || token == "sqrt")
                     {
                         expression.Add($"{token}(1)");

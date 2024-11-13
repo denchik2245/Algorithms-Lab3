@@ -106,15 +106,5 @@ namespace Lab3.Stack
         {
             return list.GetAllElementsAsString();
         }
-        
-        private double TToDouble(T value)
-        {
-            return Convert.ToDouble(value);
-        }
-        
-        private T DoubleToT(double value)
-        {
-            return (T)Convert.ChangeType(value, typeof(T));
-        }
     }
 }
